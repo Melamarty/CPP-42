@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   phonebook.cpp                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mel-amar <mel-amar@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/13 04:55:15 by mel-amar          #+#    #+#             */
+/*   Updated: 2024/01/13 04:55:16 by mel-amar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "phonebook.hpp"
 
 int main ()
@@ -13,7 +25,7 @@ int main ()
         std::string tmp;
         do
         {
-            std::cout << "\033[33enter a cmd >> ";
+            std::cout << "enter a cmd >> ";
             std::getline(std::cin, tmp);
             if (std::cin.eof())
                 exit (0);

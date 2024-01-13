@@ -1,6 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   methods.cpp                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mel-amar <mel-amar@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/13 04:55:10 by mel-amar          #+#    #+#             */
+/*   Updated: 2024/01/13 04:55:11 by mel-amar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "phonebook.hpp"
 
-// handel ctl d
+
+int all_is_sigit(std::string str)
+{
+    int i = 0;
+
+    while (str[i])
+    {
+        if (!std::isdigit(str[i]))
+            return 0;
+        i++;
+    }
+    return 1;
+}
+
 Contact full_info()
 {
     Contact new_contact;
@@ -32,7 +57,7 @@ Contact full_info()
         std::getline(std::cin, new_contact.phone);
         if (std::cin.eof())
             exit (0);
-    } while (new_contact.phone.empty());
+    } while (new_contact.phone.empty() || !all_is_sigit(new_contact.phone));
     new_contact.phone = new_contact.phone.substr(0, 10);
     if (new_contact.phone.length() == 10)
         new_contact.phone[9] = '.';
@@ -78,9 +103,13 @@ void PhoneBook::search_contact(Contact contact[8])
         i++;
     }
     std::cout << "enter index >> ";
-    std::cin >> i;
-    if (i < 0 || i > 7)
-        std::cout << "wrong index" << std::endl;
+    if (!(std::cin >> i)) {
+        std::cin.clear();
+        std::cin.ignore(std::`numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << "Invalid input. Please enter a valid index." << std::endl;
+    } else if (i < 0 || i >= 8 || i >= contact->count) {
+        std::cout << "Invalid index. Please enter a valid index." << std::endl;
+    }
     else
     {
         std::cout << "first name: " << contact[i].fname << std::endl;

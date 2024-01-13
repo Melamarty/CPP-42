@@ -1,4 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   megaphone.cpp                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mel-amar <mel-amar@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/13 04:55:03 by mel-amar          #+#    #+#             */
+/*   Updated: 2024/01/13 04:55:04 by mel-amar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <iostream>
+#include <string>
 
 int main (int ac, char **av)
 {
@@ -12,9 +25,10 @@ int main (int ac, char **av)
 	while (i < ac)
 	{
 		int j= 0;
-		while (av[i][j])
+		std::string str = av[i];
+		while (str[i])
 		{
-			std::cout << (char)std::toupper(av[i][j]);
+			std::cout << (char)std::toupper(str[i]);
 			j++;
 		}
 		std::cout << " ";
