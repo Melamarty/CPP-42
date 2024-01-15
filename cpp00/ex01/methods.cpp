@@ -105,7 +105,7 @@ void PhoneBook::search_contact(Contact contact[8])
     std::cout << "enter index >> ";
     if (!(std::cin >> i)) {
         std::cin.clear();
-        std::cin.ignore(std::`numeric_limits<std::streamsize>::max(), '\n');
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cout << "Invalid input. Please enter a valid index." << std::endl;
     } else if (i < 0 || i >= 8 || i >= contact->count) {
         std::cout << "Invalid index. Please enter a valid index." << std::endl;
