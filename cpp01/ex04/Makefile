@@ -1,14 +1,14 @@
-SRCS = main.cpp Weapon.cpp  HumanA.cpp  HumanB.cpp
+SRCS = main.cpp ft_sed.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
-NAME = violence
+NAME = ft_sed
 
 CC = clang++
 
 CFLAGS = -Wall -Wextra -Werror
 
-all : $(NAME) HumanA.hpp HumanB.hpp Weapon.hpp
+all : $(NAME) ft_sed.hpp
 
 $(NAME): $(OBJS)
 	$(CC) $(FLAGS) $(OBJS) -o $(NAME)
