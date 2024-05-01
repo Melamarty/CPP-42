@@ -2,9 +2,9 @@ SRCS = main.cpp Harl.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
-NAME = harlfilter
+NAME = harlFilter
 
-CC = clang++
+CC = c++
 
 CFLAGS = -Wall -Wextra -Werror
 

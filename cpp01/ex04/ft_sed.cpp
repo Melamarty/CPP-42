@@ -6,7 +6,11 @@ void File::loadContent(std::fstream &file)
 	std::string content;
 
 	while (getline(file, line))
-		content += line + "\n";
+    {
+		content += line;
+        if (!file.eof())
+            content += "\n";
+    }
 	this->_content = content;
 }
 

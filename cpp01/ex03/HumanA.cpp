@@ -1,11 +1,14 @@
 #include "HumanA.hpp"
 
 
-HumanA::HumanA(std::string name, Weapon& wp) : _name(name), _wp(wp) {}
+HumanA::HumanA(std::string name, Weapon& wp) : _name(name), _wp(wp) {
+
+	std::cout << "Constructor called HumanA" << std::endl;
+}
 
 HumanA::~HumanA()
 {
-	// destructor
+	std::cout << "Destructor called HumanA" << std::endl;
 }
 
 void HumanA::attack()

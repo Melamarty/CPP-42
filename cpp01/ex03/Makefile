@@ -4,7 +4,7 @@ OBJS = $(SRCS:.cpp=.o)
 
 NAME = violence
 
-CC = clang++
+CC = c++
 
 CFLAGS = -Wall -Wextra -Werror
 

@@ -2,11 +2,13 @@
 
 Zombie::Zombie()
 {
+	std::cout << "Contsructor called Zombie" << std::endl;;
 	this->_name = "default";
 }
 
 Zombie::Zombie(std::string name)
 {
+	std::cout << "Contsructor called Zombie" << std::endl;;
 	this->_name = name;
 }
 

@@ -4,7 +4,7 @@ OBJS = $(SRCS:.cpp=.o)
 
 NAME = ft_sed
 
-CC = clang++
+CC = c++
 
 CFLAGS = -Wall -Wextra -Werror
 
