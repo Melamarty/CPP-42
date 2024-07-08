@@ -5,13 +5,18 @@ int Account::_totalAmount= 0;
 int Account::_totalNbDeposits= 0;
 int Account::_totalNbWithdrawals = 0;
 
-Account::Account( int nbAccounts ) {
-	_nbAccounts = nbAccounts;
+Account::Account( int initial_deposit) {
+	_amount = initial_deposit;
+	_totalAmount += initial_deposit;
+	_accountIndex = _nbAccounts++;
+	_displayTimestamp();
+	std::cout << "index:" << _accountIndex << ";amount:" << _amount << ";created" << std::endl;
 }
 
 Account::~Account(void)
 {
-	std::cout << "Destructor called" << std::endl;
+	_displayTimestamp();
+	std::cout << "index:" << _accountIndex << ";amount:" << _amount << ";closed" << std::endl;
 }
 
 int	Account::getNbAccounts( void ) {
@@ -67,11 +72,11 @@ int Account::checkAmount( void ) const {
 
 void Account::displayStatus( void ) const {
 	_displayTimestamp();
-	std::cout << "index:" << _accountIndex << ";amount:" << _amount << ";deposits:" << _nbDeposits << ";withdrawals:" << _nbWithdrawals << std::endl;
+	std::cout << "index:" << _accountIndex << ";amount:" << _amount << ";deposits:" << _nbDeposits << ";withdrawals:" << _nbWithdrawals  << std::endl;
 }
 
 void Account::_displayTimestamp( void ) {
-	std::time_t t = std::time(0);
+	std::time_t t = std::time(NULL);
 	std::tm* now = std::localtime(&t);
 	std::cout << "[" << now->tm_year + 1900 << now->tm_mon + 1 << now->tm_mday << "_" << now->tm_hour << now->tm_min << now->tm_sec << "] ";
 }

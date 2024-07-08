@@ -1,7 +1,8 @@
+#include <iomanip>
 #include <iostream>
 
-int main ()
+int main()
 {
-	std::cout << "Hello, world!" << std::endl;
-	return 0;
+	std::cout << std::setfill('0')  
+				<< std::setw(2) << "7" << std::endl;
 }
