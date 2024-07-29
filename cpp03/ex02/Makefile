@@ -1,14 +1,14 @@
-SRCS = main.cpp Fixed.cpp
+SRCS = main.cpp ClapTrap.cpp  FragTrap.cpp
 
 OBJS = ${SRCS:.cpp=.o}
 
-NAME = fixed
+NAME = FragTrap
 
-CC = clang++
+CC = c++
 
 CFLAGS = -Wall -Wextra -Werror
 
-all : $(NAME) Fixed.hpp
+all : $(NAME) ClapTrap.hpp ScavTrap.hpp FragTrap.hpp
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)

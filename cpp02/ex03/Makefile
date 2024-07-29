@@ -1,8 +1,8 @@
-SRCS = main.cpp Fixed.cpp
+SRCS = main.cpp Fixed.cpp Point.cpp bsp.cpp
 
 OBJS = ${SRCS:.cpp=.o}
 
-NAME = fixed
+NAME = bsp
 
 CC = clang++
 
