@@ -1,28 +1,26 @@
 #include "Bureaucrat.hpp"
 
-Bureaucrat::Bureaucrat()
+Bureaucrat::Bureaucrat() : name("default"), grade(150)
 {
 	std::cout << "Default constructor called" << std::endl;
-	this->grade = 100;
 }
 
-Bureaucrat::Bureaucrat(int grade)
+Bureaucrat::Bureaucrat(int grade) : name("default")
 {
-	try
-	{
-		if (grade > 0 && grade < 150)
-		{
-			this->grade = grade;
-			std::cout << "Constructor called" << std::endl;
-		}
-		else
-			throw (grade);
-	} catch  (int g){
-		if (g < 0)
-			this->GradeTooLowException();
-		else
-			this->GradeTooHighException();
-	}
+	if (grade > 150)
+		throw grade_exepl();
+	if (grade < 1)
+		throw grade_exeph();
+	this->grade = grade;
+}
+
+Bureaucrat::Bureaucrat(const std::string name, int grade) : name(name)
+{
+	if (grade > 150)
+		throw grade_exepl();
+	if (grade < 1)
+		throw grade_exeph();
+	this->grade = grade;
 }
 
 Bureaucrat::~Bureaucrat() {
@@ -49,32 +47,23 @@ int Bureaucrat::getGrade() const
 
 void Bureaucrat::incrementGrade()
 {
-	try {
-		this->grade--;
-		if (this->grade < 0)
-			throw (0);
-		else if (this->grade)
-			throw(1);
-	} catch (int type){
-		if (type)
-			this->GradeTooHighException();
-		else
-			this->GradeTooLowException();
-	}
+	if (this->grade - 1 < 1)
+		throw grade_exeph();
+	this->grade--;
 }
 
 void Bureaucrat::decrementGrade()
 {
-	try {
-		this->grade++;
-		if (this->grade < 0)
-			throw (0);
-		else if (this->grade)
-			throw(1);
-	} catch (int type){
-		if (type)
-			this->GradeTooHighException();
-		else
-			this->GradeTooLowException();
-	}
+	if (this->grade + 1 > 150)
+		throw grade_exepl();
+	this->grade++;
+}
+
+const char *Bureaucrat::grade_exeph::what() const throw()
+{
+	return ("high grade");
+}
+const char *Bureaucrat::grade_exepl::what() const throw()
+{
+	return ("low grade");
 }
