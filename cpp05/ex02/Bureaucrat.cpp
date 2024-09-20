@@ -92,10 +92,26 @@ Bureaucrat::Bureaucrat(const Bureaucrat &b) : name(b.name), grade(b.grade)
     std::cout << "Bureaucrat : " << this->name << " copy Constructor 	is called." << std::endl;
 }
 
-Bureaucrat& Bureaucrat::operator=(const Bureaucrat &bur)
+Bureaucrat& Bureaucrat::operator=(const Bureaucrat &b)
 {
     std::cout << "Bureaucrat : " << this->name << " constructor  assignment called." << std::endl;
-    if (this != &bur)
-        this->grade = bur.grade;
+    if (this != &b)
+        this->grade = b.grade;
     return *this;
+}
+
+void Bureaucrat::executeForm(AForm const & form)
+{
+	if (form.get_signed() || this->grade <= form.get_sign_grade())
+	{
+		// form.excute(*this);
+		std::cout << this->name + " excute " + form.get_name() << std::endl;
+		return ;
+	}
+    else
+    {
+	    std::cout << this->name + " cannot excute " + form.get_name() + " because "
+	    " Grade is low \n";
+        throw Bureaucrat::GradeTooLowException();
+    }
 }
