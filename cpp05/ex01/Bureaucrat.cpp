@@ -8,18 +8,18 @@ Bureaucrat::Bureaucrat() : name("default"), grade(150)
 Bureaucrat::Bureaucrat(int grade) : name("default")
 {
 	if (grade > 150)
-		throw grade_exepl();
+		throw GradeTooLowException();
 	if (grade < 1)
-		throw grade_exeph();
+		throw GradeTooHighException();
 	this->grade = grade;
 }
 
 Bureaucrat::Bureaucrat(const std::string name, int grade) : name(name)
 {
 	if (grade > 150)
-		throw grade_exepl();
+		throw GradeTooLowException();
 	if (grade < 1)
-		throw grade_exeph();
+		throw GradeTooHighException();
 	this->grade = grade;
 }
 
@@ -27,13 +27,15 @@ Bureaucrat::~Bureaucrat() {
 	std::cout << "Destructor called" << std::endl;
 }
 
-void Bureaucrat::GradeTooHighException() {
-	std::cout << "Grade is too high" << std::endl;
-}
+//char* Bureaucrat::GradeTooHighException() {
+//	//std::cout << "Grade is too high" << std::endl;
+//	return ("Grade is too high");
+//}
 
-void Bureaucrat::GradeTooLowException() {
-	std::cout << "Grade is too low" << std::endl;
-}
+//char* Bureaucrat::GradeTooLowException() {
+//	//std::cout << "Grade is too low" << std::endl;
+//	return ("Grade is too high");
+//}
 
 std::string Bureaucrat::getName() const
 {
@@ -48,24 +50,35 @@ int Bureaucrat::getGrade() const
 void Bureaucrat::incrementGrade()
 {
 	if (this->grade - 1 < 1)
-		throw grade_exeph();
+		throw GradeTooHighException();
 	this->grade--;
 }
 
 void Bureaucrat::decrementGrade()
 {
 	if (this->grade + 1 > 150)
-		throw grade_exepl();
+		throw GradeTooHighException();
 	this->grade++;
 }
 
-const char *Bureaucrat::grade_exeph::what() const throw()
+const char *Bureaucrat::GradeTooHighException::what() const throw()
 {
 	return ("high grade");
 }
-const char *Bureaucrat::grade_exepl::what() const throw()
+const char *Bureaucrat::GradeTooLowException::what() const throw()
 {
 	return ("low grade");
+}
+
+void Bureaucrat::signForm(Form &form)
+{
+	if(!form.get_signed())
+	{
+		std::cout << name << "couldn't sign " << form.get_name() << "because " ;
+		throw GradeTooLowException();
+	}
+	else
+		std::cout << name << " signed " << form.get_name() <<std::endl;
 }
 
 std::ostream &operator<<(std::ostream &output, const Bureaucrat &b)

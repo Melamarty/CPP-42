@@ -8,7 +8,6 @@ CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 
 all: $(EXEC)
 
-
 $(EXEC): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $(EXEC)
 

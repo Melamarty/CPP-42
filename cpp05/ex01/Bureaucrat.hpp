@@ -3,7 +3,9 @@
 
 #include <iostream>
 #include <exception>
+#include "Form.hpp"
 
+class Form;
 class Bureaucrat {
 	private:
 		const std::string name;
@@ -11,26 +13,24 @@ class Bureaucrat {
 	public:
 		Bureaucrat();
 		Bureaucrat(int grade);
-		Bureaucrat(const std::string, int);
-		Bureaucrat &operator =(const Bureaucrat &);
-        Bureaucrat(const Bureaucrat &bur);
-
+		Bureaucrat(const std::string name, int grade);
 		~Bureaucrat();
-		void GradeTooHighException();
-		void GradeTooLowException();
+		Bureaucrat(const Bureaucrat &b);
+		Bureaucrat &operator =(const Bureaucrat &);
 		std::string getName() const;
 		int getGrade() const;
 		void incrementGrade();
 		void decrementGrade();
-		class grade_exeph : public std::exception{
+		class GradeTooHighException : public std::exception{
 			public:
 				const char* what() const throw();
 		};
-		class grade_exepl : public std::exception{
+		class GradeTooLowException : public std::exception{
 			public:
 				const char* what() const throw();
 		};
+		void signForm(Form &form);
 };
-std::ostream &operator<<(std::ostream &output, const Bureaucrat &b);
 
+std::ostream &operator<<(std::ostream &output, const Bureaucrat &b);
 #endif
