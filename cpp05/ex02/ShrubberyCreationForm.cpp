@@ -24,7 +24,7 @@ ShrubberyCreationForm& ShrubberyCreationForm::operator=(const ShrubberyCreationF
 	return *this;
 }
 
-std::string ShrubberyCreationForm::getTarget()
+std::string ShrubberyCreationForm::getTarget() const
 {
 	return target;
 }
@@ -35,13 +35,14 @@ ShrubberyCreationForm::~ShrubberyCreationForm()
 }
 
 void ShrubberyCreationForm::execute(Bureaucrat const &b) const {
-    if (b.getGrade() > this->get_exec_grade()) {
+    if (b.getGrade() > this->getExec_grade()) {
         throw AForm::GradeTooLowException();
     }
 
 	std::ofstream file((this->target + "_shrubbery").c_str());
     if (file.is_open()) {
-        file << "hhhhhhhh";
+        file << MY_ASCII_ART;
+		std::cout << MY_ASCII_ART << std::endl;
         std::cout << "ASCII tree created successfully!" << std::endl;
         file.close();
     } else {

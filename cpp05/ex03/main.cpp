@@ -9,28 +9,26 @@
 //     system("leaks Bureaucrat");
 // }
 
+#include <iostream>
+#include "Bureaucrat.hpp"
+#include "ShrubberyCreationForm.hpp"
+#include "PresidentialPardonForm.hpp"
+#include "RobotomyRequestForm.hpp"
+#include "Intern.hpp"
+
 int main() {
-    // atexit(leak);
-    try 
-    {
-        {
-            std::cout << "\x1b[32m" << std::endl;
-            Bureaucrat b2("Alice", 42);
-            std::cout << b2.getName() << ", bureaucrat grade " << b2.getGrade() << std::endl;
-            b2.incrementGrade();
-            std::cout << b2.getName() << ", bureaucrat grade " << b2.getGrade() << std::endl;
-            b2.decrementGrade();
-            std::cout << b2.getName() << ", bureaucrat grade " << b2.getGrade() << std::endl;
-        }
-        {
-            Bureaucrat b1;
-            std::cout << b1.getName() << ", bureaucrat grade " << b1.getGrade() << std::endl;
-            b1.incrementGrade();
-            std::cout << b1.getName() << ", bureaucrat grade " << b1.getGrade() << std::endl;
-            b1.decrementGrade();
-            b1.decrementGrade();
-            std::cout << b1.getName() << "after exception" << ", bureaucrat grade " << b1.getGrade() << std::endl;
-        }
+    try {
+        std::cout << "\x1b[32mBureaucrat Tests:\x1b[0m" << std::endl;
+        Bureaucrat b1("Alice", 42);
+        std::cout << b1.getName() << ", bureaucrat grade " << b1.getGrade() << std::endl;
+        b1.incrementGrade();
+        std::cout << b1.getName() << ", bureaucrat grade " << b1.getGrade() << std::endl;
+        b1.decrementGrade();
+        std::cout << b1.getName() << ", bureaucrat grade " << b1.getGrade() << std::endl;
+        
+        Bureaucrat b2("Bob", 150);
+        std::cout << b2.getName() << ", bureaucrat grade " << b2.getGrade() << std::endl;
+        b2.decrementGrade(); // This should throw an exception
     }
     catch (const Bureaucrat::GradeTooHighException &e) {
         std::cerr << "Caught an exception: " << e.what() << std::endl;
@@ -40,142 +38,41 @@ int main() {
     }
 
     try {
-        std::cout << "\n\n================================================================================\n" << std::endl;
-        Bureaucrat b4("Charlie", 1);
-        std::cout << b4.getName() << ", bureaucrat grade " << b4.getGrade() << std::endl;
-        b4.incrementGrade();
-        std::cout << b4;
+        std::cout << "\n\x1b[34mForm Execution Tests:\x1b[0m" << std::endl;
+        Bureaucrat bur("Charlie", 1);
+        ShrubberyCreationForm shrubForm("home");
+        shrubForm.beSigned(bur);
+        shrubForm.execute(bur);
+
+        PresidentialPardonForm pardonForm("Zaphod");
+        pardonForm.beSigned(bur);
+        pardonForm.execute(bur);
+
+        RobotomyRequestForm roboForm("Bender");
+        roboForm.beSigned(bur);
+        roboForm.execute(bur);
     }
-    catch (const Bureaucrat::GradeTooHighException &e) {
-        std::cerr << "Caught an exception: " << e.what() << std::endl;
+    catch (std::exception &e) {
+        std::cerr << "Caught an exception during form execution: " << e.what() << std::endl;
     }
-    catch (const Bureaucrat::GradeTooLowException &e) {
-        std::cerr << "Caught an exception: " << e.what() << std::endl;
+
+    try {
+        std::cout << "\n\x1b[36mIntern Tests:\x1b[0m" << std::endl;
+        Intern intern;
+        AForm* form1 = intern.makeForm("robotomy request", "Bender");
+        Bureaucrat internBur(2);
+        form1->beSigned(internBur);
+        form1->execute(internBur);
+        delete form1; // Clean up
+
+        AForm* form2 = intern.makeForm("presidential pardon", "Zaphod");
+        form2->beSigned(internBur);
+        form2->execute(internBur);
+        delete form2; // Clean up
     }
-    try
-    {
-        std::cout << "\n\n================================================================================\n" << std::endl;
-        Bureaucrat bur("amine",2);
-        ShrubberyCreationForm sub;
-        sub.execute(bur);
+    catch (const std::exception &e) {
+        std::cerr << "Caught an exception during intern operation: " << e.what() << std::endl;
     }
-    catch (std::exception &e)
-    {
-        std::cout << e.what() << std::endl;
-    }
-    try
-    {
-        std::cout << "\n\n================================================================================\n" << std::endl;
-        Bureaucrat bur("_____Bureaucrat____", 24);
-        PresidentialPardonForm pre;
-        pre.execute(bur);
-    }
-    catch (std::exception &e)
-    {
-        std::cout << e.what() << std::endl;
-    }
-    try
-    {
-        std::cout << "\n\n================================================================================\n" << std::endl;
-        Bureaucrat bur("_____Bureaucrat____", 24);
-        RobotomyRequestForm Robo;
-        Robo.execute(bur);
-    }
-    catch (std::exception &e)
-    {
-        std::cout << e.what() << std::endl;
-    }
-    try
-    {
-        std::cout << "\n\n================================================================================\n" << std::endl;
-        Bureaucrat bur("amine",200);
-        ShrubberyCreationForm sub;
-        sub.execute(bur);
-    }
-    catch (std::exception &e)
-    {
-        std::cout << e.what() << std::endl;
-    }
-    try
-    {
-        std::cout << "\n\n================================================================================\n" << std::endl;
-        Bureaucrat bur("_____Bureaucrat____", 300);
-        PresidentialPardonForm pre;
-        pre.execute(bur);
-    }
-    catch (std::exception &e)
-    {
-        std::cout << e.what() << std::endl;
-    }
-    try
-    {
-        std::cout << "\n\n================================================================================\n" << std::endl;
-        Bureaucrat bur("_____Bureaucrat____", 300);
-        RobotomyRequestForm Robo;
-        Robo.execute(bur);
-    }
-    catch (std::exception &e)
-    {
-        std::cout << e.what() << std::endl;
-    }
-    try
-    {
-        std::cout << "\n\n================================================================================\n" << std::endl;
-        Bureaucrat bur("_____Bureaucrat____", 78);
-        PresidentialPardonForm pre;
-        bur.executeForm(pre);
-    }
-    catch (std::exception &e)
-    {
-        std::cout << e.what() << std::endl;
-    }
-    try
-    {
-        std::cout << "\n\n================================================================================\n" << std::endl;
-        Bureaucrat bur("_____Bureaucrat____", 20);
-        PresidentialPardonForm pre;
-        bur.executeForm(pre);
-        bur.signForm(pre);
-        Bureaucrat bur_c("_____Bureaucrat____", 26);
-        bur_c.signForm(pre);
-    }
-    catch (std::exception &e)
-    {
-        std::cout << e.what() << std::endl;
-    }
-    try
-    {
-        std::cout << "\n\n================================================================================\n" << std::endl;
-        PresidentialPardonForm pre;
-        Bureaucrat bur_c("_____Bureaucrat____", 26);
-        bur_c.signForm(pre);
-    }
-    catch (std::exception &e)
-    {
-        std::cout << e.what() << std::endl;
-    }
-    try
-    {
-        {
-            Bureaucrat bu(2);
-            Intern  someRandomIntern;
-            AForm*   rrf;
-            rrf = someRandomIntern.makeForm("robotomy request", "Bender");
-            rrf->execute(bu);
-            delete rrf;
-        }
-        {
-            Bureaucrat bu(200);
-            Intern  someRandomIntern;
-            AForm*   rrf;
-            rrf = someRandomIntern.makeForm("robotomy request", "Bender");
-            rrf->execute(bu);
-            delete rrf;
-        }
-    }
-    catch (...)
-    {
-        std::cout << "Exception (:" << std::endl;
-    }
-    return (0);
+
+    return 0;
 }

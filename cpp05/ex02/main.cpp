@@ -11,6 +11,7 @@ int main() {
     try {
         Bureaucrat alice("Alice", 50);
         ShrubberyCreationForm shrubbery("garden");
+        shrubbery.execute(alice);
         RobotomyRequestForm robotomy("robot");
         PresidentialPardonForm pardon("Bob");
 

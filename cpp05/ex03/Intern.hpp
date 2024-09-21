@@ -8,9 +8,9 @@
 class Intern
 {
     private:
-        static AForm* createShrubberyForm(std::string const &);
-        static AForm* createRobotomyForm(std::string const &);
-        static AForm* createPresidentialForm(std::string const &);
+        static AForm* x(std::string const &);
+        static AForm* y(std::string const &);
+        static AForm* z(std::string const &);
     public:
         Intern();
         Intern(const Intern &);

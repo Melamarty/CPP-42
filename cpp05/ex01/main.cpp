@@ -5,30 +5,31 @@
 // {
 //     system("leaks Bureaucrat");
 // }
+#include <iostream>
+#include "Bureaucrat.hpp"
+#include "Form.hpp"
 
 int main() {
-    // atexit(leak);
     {
-        try 
-        {
-            {
-                //std::cout << "\x1b[32m" << std::endl;
-                Bureaucrat b2("Alice", 42);
-                std::cout << b2.getName() << ", bureaucrat grade " << b2.getGrade() << std::endl;
-                b2.incrementGrade();
-                std::cout << b2.getName() << ", bureaucrat grade " << b2.getGrade() << std::endl;
-                b2.decrementGrade();
-                std::cout << b2.getName() << ", bureaucrat grade " << b2.getGrade() << std::endl;
-            }
-            {
-                Bureaucrat b1;
-                std::cout << b1.getName() << ", bureaucrat grade " << b1.getGrade() << std::endl;
-                b1.incrementGrade();
-                std::cout << b1.getName() << ", bureaucrat grade " << b1.getGrade() << std::endl;
-                b1.decrementGrade();
-                b1.decrementGrade();
-                std::cout << b1.getName() << "after exception" << ", bureaucrat grade " << b1.getGrade() << std::endl;
-            }
+        try {
+            Bureaucrat alice("Alice", 42);
+            std::cout << alice.getName() << ", bureaucrat grade " << alice.getGrade() << std::endl;
+
+            alice.incrementGrade();
+            std::cout << alice.getName() << ", bureaucrat grade " << alice.getGrade() << std::endl;
+
+            alice.decrementGrade();
+            std::cout << alice.getName() << ", bureaucrat grade " << alice.getGrade() << std::endl;
+
+            Bureaucrat bob;
+            std::cout << bob.getName() << ", bureaucrat grade " << bob.getGrade() << std::endl;
+
+            bob.incrementGrade();
+            std::cout << bob.getName() << ", bureaucrat grade " << bob.getGrade() << std::endl;
+
+            bob.decrementGrade();
+            bob.decrementGrade();
+            std::cout << bob.getName() << " after exception, bureaucrat grade " << bob.getGrade() << std::endl;
         }
         catch (const Bureaucrat::GradeTooHighException &e) {
             std::cerr << "Caught an exception: " << e.what() << std::endl;
@@ -38,11 +39,12 @@ int main() {
         }
 
         try {
-            std::cout << "\n\n================================================================================\n" << std::endl;
-            Bureaucrat b4("Charlie", 1);
-            std::cout << b4.getName() << ", bureaucrat grade " << b4.getGrade() << std::endl;
-            b4.incrementGrade();
-            std::cout << b4;
+            std::cout << "\n================================================================================\n" << std::endl;
+            Bureaucrat charlie("Charlie", 1);
+            std::cout << charlie.getName() << ", bureaucrat grade " << charlie.getGrade() << std::endl;
+
+            charlie.incrementGrade();
+            std::cout << charlie;
         }
         catch (const Bureaucrat::GradeTooHighException &e) {
             std::cerr << "Caught an exception: " << e.what() << std::endl;
@@ -51,9 +53,10 @@ int main() {
             std::cerr << "Caught an exception: " << e.what() << std::endl;
         }
     }
+
     {
         try {
-            std::cout << "\n\n================================================================================\n" << std::endl;
+            std::cout << "\n================================================================================\n" << std::endl;
             Form formA("Form A", 50, 75);
             std::cout << formA << std::endl;
 
@@ -71,30 +74,27 @@ int main() {
         catch (const std::exception &e) {
             std::cerr << "Exception: " << e.what() << std::endl;
         }
-        try
-        {
-            Form form("def", 151,152);
+
+        try {
+            Form invalidForm("def", 151, 152);
         }
-        catch(const Form::GradeTooLowException &e)
-        {
+        catch (const Form::GradeTooLowException &e) {
             std::cout << e.what() << std::endl;
         }
-        catch(const Form::GradeTooHighException &e)
-        {
+        catch (const Form::GradeTooHighException &e) {
             std::cout << e.what() << std::endl;
         }
-        try
-        {
-            Form form("HIGHT",0,-1);
+
+        try {
+            Form anotherInvalidForm("HIGHT", 0, -1);
         }
-        catch(const Form::GradeTooLowException &e)
-        {
+        catch (const Form::GradeTooLowException &e) {
             std::cout << e.what() << std::endl;
         }
-        catch(const Form::GradeTooHighException &e)
-        {
+        catch (const Form::GradeTooHighException &e) {
             std::cout << e.what() << std::endl;
         }
     }
-    return (0);
+
+    return 0;
 }

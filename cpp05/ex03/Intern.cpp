@@ -5,6 +5,21 @@ Intern::Intern()
 	std::cout << "Default constructor called" << std::endl;
 }
 
+AForm* Intern::x(std::string const & target)
+{
+    return new ShrubberyCreationForm(target);
+}
+
+AForm* Intern::y(std::string const & target)
+{
+	return new RobotomyRequestForm(target);
+}
+
+AForm* Intern::z(std::string const & target)
+{
+    return new PresidentialPardonForm(target);
+}
+
 Intern::Intern(const Intern &i)
 {
 	std::cout << "copy constructor called" << std::endl;
@@ -20,23 +35,26 @@ Intern &Intern::operator=(const Intern &i)
 
 AForm *Intern::makeForm(std::string const& name, std::string const &target)
 {
-	std::string forms[] = {
+	std::string table[] = {
             "shrubbery creation",
             "robotomy request",
             "presidential pardon"
 
         };
         
-        AForm* (*formCreators[])(std::string const &) = {
-            &createShrubberyForm,
-            &createRobotomyForm,
-            &createPresidentialForm
+        AForm* (*pointerToFun[])(std::string const &) =
+        {
+            &x,
+            &y,
+            &z
         };
         
-        for (int i = 0; i < 3; i++) {
-            if (name == forms[i]) {
+        for (int i = 0; i < 3; i++)
+        {
+            if (name == table[i])
+            {
                 std::cout << "Intern creates " << name << std::endl;
-                return formCreators[i](target);
+                return (pointerToFun[i](target));
             }
         }
         std::cerr << "Error: Form name \"" << name << "\" does not exist." << std::endl;
@@ -44,20 +62,6 @@ AForm *Intern::makeForm(std::string const& name, std::string const &target)
 
 }
 
-AForm* Intern::createShrubberyForm(std::string const & target)
-{
-    return new ShrubberyCreationForm(target);
-}
-
-AForm* Intern::createRobotomyForm(std::string const & target)
-{
-	return new RobotomyRequestForm(target);
-}
-
-AForm* Intern::createPresidentialForm(std::string const & target)
-{
-    return new PresidentialPardonForm(target);
-}
 
 
 Intern::~Intern()

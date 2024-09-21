@@ -36,7 +36,7 @@ RobotomyRequestForm::~RobotomyRequestForm()
 
 void RobotomyRequestForm::execute( Bureaucrat const & b) const
 {
-    if (b.getGrade() > this->get_sign_grade())
+    if (b.getGrade() > this->getSign_grade())
         throw AForm::GradeTooLowException();
     std::srand(std::time(NULL));
     if (std::rand() % 2)
