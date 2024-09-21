@@ -19,12 +19,10 @@ AForm::~AForm()
 }
 
 const char* AForm::GradeTooHighException::what() const throw(){
-	//std::cout << "Grade is too high" << std::endl;
 	return "Grade is too high" ;
 }
 
 const char* AForm::GradeTooLowException::what() const throw(){
-	//std::cout << "Grade is too low" << std::endl;
 	return "Grade is too low" ;
 }
 

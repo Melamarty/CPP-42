@@ -27,16 +27,6 @@ Bureaucrat::~Bureaucrat() {
 	std::cout << "Destructor called" << std::endl;
 }
 
-//char* Bureaucrat::GradeTooHighException() {
-//	//std::cout << "Grade is too high" << std::endl;
-//	return ("Grade is too high");
-//}
-
-//char* Bureaucrat::GradeTooLowException() {
-//	//std::cout << "Grade is too low" << std::endl;
-//	return ("Grade is too high");
-//}
-
 std::string Bureaucrat::getName() const
 {
 	return this->name;
@@ -104,7 +94,7 @@ void Bureaucrat::executeForm(AForm const & form)
 {
 	if (form.getSigned() || this->grade <= form.getSign_grade())
 	{
-		// form.excute(*this);
+		form.execute(*this);
 		std::cout << this->name + " excute " + form.getName() << std::endl;
 		return ;
 	}

@@ -12,6 +12,7 @@
 int main() {
     {
         try {
+            std::cout << "\n\x1b[34mfirst Test:\x1b[0m" << std::endl;
             Bureaucrat alice("Alice", 42);
             std::cout << alice.getName() << ", bureaucrat grade " << alice.getGrade() << std::endl;
 
@@ -39,7 +40,7 @@ int main() {
         }
 
         try {
-            std::cout << "\n================================================================================\n" << std::endl;
+            std::cout << "\n\x1b[34msecond Test:\x1b[0m" << std::endl;
             Bureaucrat charlie("Charlie", 1);
             std::cout << charlie.getName() << ", bureaucrat grade " << charlie.getGrade() << std::endl;
 
@@ -56,7 +57,7 @@ int main() {
 
     {
         try {
-            std::cout << "\n================================================================================\n" << std::endl;
+            std::cout << "\n\x1b[34mthird Test:\x1b[0m" << std::endl;
             Form formA("Form A", 50, 75);
             std::cout << formA << std::endl;
 

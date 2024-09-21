@@ -41,10 +41,14 @@ void ShrubberyCreationForm::execute(Bureaucrat const &b) const {
 
 	std::ofstream file((this->target + "_shrubbery").c_str());
     if (file.is_open()) {
-        file << "hhhhhhhh";
         std::cout << "ASCII tree created successfully!" << std::endl;
+        file << MY_ASCII_ART;
+		std::cout << "\n\x1b[34mASCII TREE:\x1b[0m\n" << std::endl;
+		std::cout << "\033[32m" << MY_ASCII_ART << "\033[0m" << std::endl;
+		std::cout << "\n" << std::endl;
         file.close();
     } else {
         std::cerr << "Error: Could not open file for writing." << std::endl;
     }
 }
+

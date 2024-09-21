@@ -4,18 +4,6 @@
 #include "RobotomyRequestForm.hpp"
 #include "Intern.hpp"
 
-// void leak()
-// {
-//     system("leaks Bureaucrat");
-// }
-
-#include <iostream>
-#include "Bureaucrat.hpp"
-#include "ShrubberyCreationForm.hpp"
-#include "PresidentialPardonForm.hpp"
-#include "RobotomyRequestForm.hpp"
-#include "Intern.hpp"
-
 int main() {
     try {
         std::cout << "\x1b[32mBureaucrat Tests:\x1b[0m" << std::endl;
@@ -28,7 +16,7 @@ int main() {
         
         Bureaucrat b2("Bob", 150);
         std::cout << b2.getName() << ", bureaucrat grade " << b2.getGrade() << std::endl;
-        b2.decrementGrade(); // This should throw an exception
+        b2.decrementGrade();
     }
     catch (const Bureaucrat::GradeTooHighException &e) {
         std::cerr << "Caught an exception: " << e.what() << std::endl;
@@ -39,18 +27,18 @@ int main() {
 
     try {
         std::cout << "\n\x1b[34mForm Execution Tests:\x1b[0m" << std::endl;
-        Bureaucrat bur("Charlie", 1);
-        ShrubberyCreationForm shrubForm("home");
-        shrubForm.beSigned(bur);
-        shrubForm.execute(bur);
+        Bureaucrat b("Charlie", 1);
+        ShrubberyCreationForm shrubForm("home0");
+        shrubForm.beSigned(b);
+        shrubForm.execute(b);
 
         PresidentialPardonForm pardonForm("Zaphod");
-        pardonForm.beSigned(bur);
-        pardonForm.execute(bur);
+        pardonForm.beSigned(b);
+        pardonForm.execute(b);
 
         RobotomyRequestForm roboForm("Bender");
-        roboForm.beSigned(bur);
-        roboForm.execute(bur);
+        roboForm.beSigned(b);
+        roboForm.execute(b);
     }
     catch (std::exception &e) {
         std::cerr << "Caught an exception during form execution: " << e.what() << std::endl;
@@ -63,12 +51,12 @@ int main() {
         Bureaucrat internBur(2);
         form1->beSigned(internBur);
         form1->execute(internBur);
-        delete form1; // Clean up
+        delete form1;
 
         AForm* form2 = intern.makeForm("presidential pardon", "Zaphod");
         form2->beSigned(internBur);
         form2->execute(internBur);
-        delete form2; // Clean up
+        delete form2;
     }
     catch (const std::exception &e) {
         std::cerr << "Caught an exception during intern operation: " << e.what() << std::endl;

@@ -14,15 +14,12 @@ int main() {
         shrubbery.execute(alice);
         RobotomyRequestForm robotomy("robot");
         PresidentialPardonForm pardon("Bob");
+        alice.executeForm(shrubbery);
+        shrubbery.beSigned(alice);    
+        alice.executeForm(shrubbery); 
+        robotomy.beSigned(alice);
+        alice.executeForm(robotomy);  
 
-        alice.executeForm(shrubbery); // Should fail because the form is not signed
-        shrubbery.beSigned(alice);    // Alice signs the form
-        alice.executeForm(shrubbery); // Now it works
-
-        robotomy.beSigned(alice);     // Sign the robotomy form
-        alice.executeForm(robotomy);  // Execute robotomy form
-
-        // Pardon form requires higher grade to sign and execute, will throw exception if Alice tries
         alice.executeForm(pardon);
     } catch (const std::exception& e) {
         std::cerr << e.what() << std::endl;
