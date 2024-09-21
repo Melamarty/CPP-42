@@ -1,6 +1,6 @@
 #include "Form.hpp"
 
-Form::Form () : name("default"), sign_grade(150), exec_grade(150)
+Form::Form () : name("default"),_signed(false), sign_grade(150), exec_grade(150)
 {
 	std::cout << "Default constructor called" << std::endl;
 }
@@ -49,10 +49,9 @@ bool Form::get_signed() const
 
 void Form::beSigned(Bureaucrat &b)
 {
-	if (b.getGrade() < sign_grade)
-		_signed = true;
-	else
-		GradeTooLowException();
+	if (b.getGrade() > sign_grade) //?
+		throw GradeTooLowException();
+	_signed = true;
 }
 
 std::ostream &operator<<(std::ostream &output, const Form &form)
@@ -63,7 +62,7 @@ std::ostream &operator<<(std::ostream &output, const Form &form)
 	return (output) ;
 }
 
-Form::Form(const Form &b) : name(b.name), _signed(b.get_signed()),sign_grade(b.get_sign_grade()),exec_grade(b.get_exec_grade())
+Form::Form(const Form &b) : name(b.name), _signed(0),sign_grade(b.get_sign_grade()),exec_grade(b.get_exec_grade())
 {
     std::cout << "Form : " << this->name << " copy Constructor 	is called." << std::endl;
 }

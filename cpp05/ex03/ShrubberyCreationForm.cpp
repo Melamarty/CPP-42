@@ -35,7 +35,7 @@ ShrubberyCreationForm::~ShrubberyCreationForm()
 }
 
 void ShrubberyCreationForm::execute(Bureaucrat const &b) const {
-    if (b.getGrade() > this->get_exec_grade()) {
+    if (b.getGrade() > this->getExec_grade()) {
         throw AForm::GradeTooLowException();
     }
 

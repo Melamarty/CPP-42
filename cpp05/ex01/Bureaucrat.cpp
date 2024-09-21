@@ -72,7 +72,7 @@ const char *Bureaucrat::GradeTooLowException::what() const throw()
 
 void Bureaucrat::signForm(Form &form)
 {
-	if(!form.get_signed())
+	if (!form.get_signed())
 	{
 		std::cout << name << "couldn't sign " << form.get_name() << "because " ;
 		throw GradeTooLowException();
@@ -90,6 +90,7 @@ std::ostream &operator<<(std::ostream &output, const Bureaucrat &b)
 Bureaucrat::Bureaucrat(const Bureaucrat &b) : name(b.name), grade(b.grade)
 {
     std::cout << "Bureaucrat : " << this->name << " copy Constructor 	is called." << std::endl;
+	
 }
 
 Bureaucrat& Bureaucrat::operator=(const Bureaucrat &bur)

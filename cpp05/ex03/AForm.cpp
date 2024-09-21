@@ -28,21 +28,21 @@ const char* AForm::GradeTooLowException::what() const throw(){
 	return "Grade is too low" ;
 }
 
-std::string AForm::get_name() const
+std::string AForm::getName() const
 {
 	return name;
 }
 
-int AForm::get_sign_grade() const
+int AForm::getSign_grade() const
 {
 	return sign_grade;
 }
-int AForm::get_exec_grade() const
+int AForm::getExec_grade() const
 {
 	return exec_grade;
 }
 
-bool AForm::get_signed() const
+bool AForm::getSigned() const
 {
 	return _signed;
 }
@@ -57,13 +57,13 @@ void AForm::beSigned(Bureaucrat &b)
 
 std::ostream &operator<<(std::ostream &output, const AForm &AForm)
 {
-	output << AForm.get_name() << "signed : " << AForm.get_signed()
-			<< "sign grade: " << AForm.get_sign_grade()
-			<< "execution grade" << AForm.get_sign_grade();
+	output << AForm.getName() << "signed : " << AForm.getSigned()
+			<< "sign grade: " << AForm.getSign_grade()
+			<< "execution grade" << AForm.getSign_grade();
 	return (output) ;
 }
 
-AForm::AForm(const AForm &b) : name(b.name), _signed(b.get_signed()),sign_grade(b.get_sign_grade()),exec_grade(b.get_exec_grade())
+AForm::AForm(const AForm &b) : name(b.name), _signed(b.getSigned()),sign_grade(b.getSign_grade()),exec_grade(b.getExec_grade())
 {
     std::cout << "AForm : " << this->name << " copy Constructor 	is called." << std::endl;
 }
@@ -72,6 +72,6 @@ AForm& AForm::operator=(const AForm &b)
 {
     std::cout << "AForm : " << this->name << " constructor  assignment called." << std::endl;
     if (this != &b)
-        this->_signed = b.get_signed();
+        this->_signed = b.getSigned();
     return *this;
 }
