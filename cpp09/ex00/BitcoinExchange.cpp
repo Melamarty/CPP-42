@@ -88,14 +88,14 @@ void BitcoinExchange::displayData()
     }
 }
 
-void BitcoinExchange::displayInput()
-{
-    std::map<std::string, double>::iterator it;
-    for (it = input.begin(); it != input.end(); ++it)
-    {
-        std::cout << it->first << "  .|.  " << it->second << std::endl;
-    }
-}
+// void BitcoinExchange::displayInput()
+// {
+//     std::map<std::string, double>::iterator it;
+//     for (it = input.begin(); it != input.end(); ++it)
+//     {
+//         std::cout << it->first << "  .|.  " << it->second << std::endl;
+//     }
+// }
 
 void BitcoinExchange::getBtc(std::string &date, double &rate)
 {
