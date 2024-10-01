@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <map>
-#include <vector>
 #include <iterator>
 #include <fstream>
 #include <sstream>
@@ -28,5 +27,5 @@ bool checkToken(std::string token);
 std::string validDate(std::string &date);
 bool isDouble(const std::string &s);
 std::string trim(const std::string &s);
-std::vector<std::string> split(std::string s, char del);
+std::string* split(std::string s, char del, int &size);
 int compare_dates(const std::string &date1, const std::string &date2);

@@ -16,11 +16,11 @@ std::string trim(const std::string &s)
     return s.substr(start, end - start);
 }
 
-std::vector<std::string> split(std::string s, char del)
+std::list<std::string> split(std::string s, char del)
 {
     std::stringstream ss(s);
     std::string word;
-    std::vector <std::string> tokens;
+    std::list <std::string> tokens;
 
     while (!ss.eof())
     {
@@ -44,15 +44,44 @@ bool valid_token(std::string &token)
     return true;
 }
 
+bool validList(std::list<std::string> &tokens)
+{
+    std::list <std::string>::iterator it;
+    int i = 0;
+    
+    for (it = tokens.begin(); it != tokens.end(); ++it)
+    {
+        if (((std::string)*it).empty())
+            continue;
+        if (i <= 1)
+        {
+            if (isoperator(*it))
+                return false;
+        }
+        else
+        {
+            if (!(i % 2) && !isoperator(*it))
+                return false;
+            if ((i % 2) && isoperator(*it))
+                return false;
+        }
+        i++;
+    }
+    if (i < 3 || i %2 == 0)
+        return false;
+    return true;
+}
+
 std::stack<std::string> parseNotation(const std::string &s)
 {
-    std::vector<std::string> tokens = split(s, ' ');
+    std::list<std::string> tokens = split(s, ' ');
     std::stack<std::string> stack;
-    std::vector <std::string>::reverse_iterator it;
+    std::list <std::string>::iterator it;
 
-    for (it = tokens.rbegin(); it != tokens.rend(); ++it)
+    if (!validList(tokens))
+        throw std::runtime_error("invalid sequence");
+    for (it = tokens.begin(); it != tokens.end(); ++it)
     {
-        // std::cout << "-" << *it << "-\n" ;
         if (((std::string)(*it)).empty())
             continue;
         if (!valid_token(*it))
@@ -70,4 +99,52 @@ void displayStack(std::stack<std::string> &stack)
         stack.pop();
         displayStack(stack);
     }
+}
+
+double doOp(std::stack<std::string> &st, double &nb, std::string &op)
+{
+    if (st.size() == 1)
+    {
+        double sb = atoi(st.top().c_str());
+        // std::cout << nb << " " << op << " " << sb << std::endl;
+        st.pop();
+        if (op == "+")
+            return nb + sb;
+        if (op == "-")
+            return nb - sb;
+        if (op == "*")
+            return nb * sb;
+        if (op == "/")
+        {
+            if (!sb)
+                throw std::runtime_error("devision by zero");
+            return nb / sb;
+        }
+    }
+    if (op == "+")
+        return nb + rpn(st);
+    if (op == "-")
+        return nb - rpn(st);
+    if (op == "*")
+        return nb * rpn(st);
+    if (op == "/")
+    {
+        // if (!sb)
+        //     throw std::runtime_error("devision by zero");
+        return nb / rpn(st);
+    }
+    return 0;
+}
+
+double rpn(std::stack<std::string> &st)
+{
+    if (st.size() < 3)
+        return (0);
+    std::string op = st.top();
+    st.pop();
+    double nb = atoi(st.top().c_str());
+    st.pop();
+    return doOp(st, nb, op);
+    // }
+
 }

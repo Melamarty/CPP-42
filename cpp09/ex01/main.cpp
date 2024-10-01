@@ -12,7 +12,9 @@ int main (int ac, char **av)
     try
     {
         std::stack <std::string> stack = parseNotation(av[1]);
-        displayStack(stack);
+        // displayStack(stack);
+        double res = rpn(stack);
+        std::cout << res;
     }catch (std::runtime_error &e)
     {
         std::cout << "Error: " << e.what() << std::endl;
