@@ -1,8 +1,13 @@
 #include "RPN.hpp"
 
+void f()
+{
+    system("leaks RPN");
+}
 
 int main (int ac, char **av)
 {
+    atexit(f);
     if (ac != 2)
     {
         std::cout << "Error\n";

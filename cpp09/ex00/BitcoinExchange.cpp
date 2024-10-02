@@ -20,7 +20,15 @@ BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &bt)
 
 BitcoinExchange::~BitcoinExchange()
 {
-    // std::cout << "BitcoinExchange destroyed\n";
+    // for (std::map<std::string, double>::iterator it = data.begin(); it != data.end(); ++it) {
+    //     delete it->first;
+    // }
+}
+
+int deleteSplit(std::string *tokens)
+{
+    delete [] tokens;
+    return (1);
 }
 
 void BitcoinExchange::readData(std::string fileName)
@@ -39,6 +47,7 @@ void BitcoinExchange::readData(std::string fileName)
             throw std::runtime_error("memory error");
         std::string date = tokens[0];
         double rate = std::strtod(tokens[1].c_str(), 0);
+        deleteSplit(tokens);
         data[date] = rate;    
     }
     file.close();
@@ -78,7 +87,8 @@ void BitcoinExchange::readInput(std::string fileName)
     int size;
     std::string *title = split(line, '|', size);
     if (!title || size != 2 || title[0] != "date" || title[1] != "value")
-        throw std::runtime_error("ivalid input format");
+        deleteSplit(title), throw std::runtime_error("ivalid input format");
+    deleteSplit(title);
     while (std::getline(file, line))
     {
         std::string *tokens = split(line, '|', size);
@@ -100,6 +110,7 @@ void BitcoinExchange::readInput(std::string fileName)
             else
                 getBtc(date, rate);
         }
+        deleteSplit(tokens);
         std::cout << std::endl;
     }
     file.close();
@@ -162,19 +173,20 @@ bool isLeapYear(int year) {
 std::string validDate(std::string &date)
 {
     int size;
-    std::string *tokens= split(date, '-', size);
+    std::string *tokens = split(date, '-', size);
     if (size != 3 || !tokens)
-        return "invalid date format";
-    for (int i = 0; i < 3; ++i)
+        return deleteSplit(tokens), "invalid date format";
+    for (int i  = 0; i < 3; ++i)
     {
         if (checkToken(tokens[i]))
-            return ("ivalid date token");
+            return (deleteSplit(tokens), "ivalid date token");
     }
     if (tokens[1].length() > 2 || tokens[2].length() > 2)
-        return "ivalid date token";
+        return deleteSplit(tokens), "ivalid date token";
     double year = strtod(tokens[0].c_str(), 0);
     double month = strtod(tokens[1].c_str(), 0);
     double day = strtod(tokens[2].c_str(), 0);
+    deleteSplit(tokens);
     if (month > 12 || day > 31)
         return "date out of the valid range";
     const int days[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -224,8 +236,8 @@ std::string* split(std::string s, char del, int &size)
     size = 0;
     while (!ss.eof())
     {
-        if (size >= 3)
-            return NULL;
+        if (size >= 3 && deleteSplit(tokens))
+            return  NULL;
         std::getline(ss, word, del);
         tokens[size] = trim(word);
         size++;
@@ -241,20 +253,19 @@ int compare_dates(const std::string &date1, const std::string &date2)
     if (!t1 || !t2)
         throw std::runtime_error("memory Error\n");
     if (std::strtod(t1[0].c_str(), 0) < std::strtod(t2[0].c_str(), 0))
-        return (-1);
+        return (deleteSplit(t1), deleteSplit(t2),-1);
     else if (std::strtod(t1[0].c_str(), 0) > std::strtod(t2[0].c_str(), 0))
-        return (1);
+        return (deleteSplit(t1), deleteSplit(t2),1);
     
     if (std::strtod(t1[1].c_str(), 0) < std::strtod(t2[1].c_str(), 0))
-        return (-1);
+        return (deleteSplit(t1), deleteSplit(t2),-1);
     else if (std::strtod(t1[1].c_str(), 0) > std::strtod(t2[1].c_str(), 0))
-        return (1);
+        return (deleteSplit(t1), deleteSplit(t2),1);
 
     if (std::strtod(t1[2].c_str(), 0) < std::strtod(t2[2].c_str(), 0))
-        return (-1);
+        return (deleteSplit(t1), deleteSplit(t2),-1);
     else if (std::strtod(t1[2].c_str(), 0) > std::strtod(t2[2].c_str(), 0))
-        return (1);
-    
-    return (0);
+        return (deleteSplit(t1), deleteSplit(t2),1);
+    deleteSplit(t1), deleteSplit(t2);
     return (0);
 }

@@ -21,12 +21,15 @@ void displayContainer(std::vector<double> vect, double save)
     std::cout << "Before: ";
     std::vector<double>::iterator it;
 
-    for (it = vect.begin(); it != vect.end(); ++it)
+    int i = 0;
+    for (it = vect.begin(); it != vect.end() && ++i < 5; ++it)
     {
         std::cout << *it << " ";
     }
     if (save >= 0)
         std::cout << save;
+    if (i >= 5 && it != vect.end())
+        std::cout << "[...]";
     std::cout << std::endl;
 }
 
@@ -35,10 +38,13 @@ void displayContainer(std::vector<double> vect)
     std::vector<double >::iterator it;
 
     std::cout << "After: ";
-    for (it = vect.begin(); it != vect.end(); ++it)
+    int i = 0;
+    for (it = vect.begin(); it != vect.end() && ++i <= 5; ++it)
     {
         std::cout << *it << " ";
     }
+    if (i >= 5 && it != vect.end())
+        std::cout << "[...]";
     std::cout << std::endl;
 }
 
@@ -110,7 +116,7 @@ void indexSeq(std::vector<double> & jacob,std::vector<double> & inds, int size)
     int tmp;
     int tmp2;
 
-    it  += 2;
+    it  += 1; //
     int i = 0;
     while (it != jacob.end())
     {
@@ -132,18 +138,16 @@ void insertSort(std::vector <double> &seq, std::vector <double> &res, double sav
 {
     std::vector<double> jacob,inds;
     jacobSeq(jacob, 15);
-    indexSeq(jacob, inds, seq.size());
+    indexSeq(jacob, inds, seq.size() / 2);
     for (std::vector <double>::iterator it = inds.begin(); it != inds.end(); ++it)
-        {
-            if (*(it) - 1 < (int)res.size())
-            {
-                insert(seq, res[*it - 1]);
-            }
-        }
-        if (res.size())
-            insert(seq, res[0]);
-        if (save >= 0)
-            insert(seq,save);
+    {
+        if (*(it) < (int)res.size()) //
+            insert(seq, res[*it]); //
+    }
+    if (res.size())
+        insert(seq, res[0]);
+    if (save >= 0)
+        insert(seq,save);
 }
 
 void splitSeq(std::vector<std::pair<double, double> > &vect, std::vector <double> &seq, std::vector <double> &res)
@@ -182,6 +186,8 @@ std::vector<double> parseNbs(char **nbs, int size, double &save)
     }
     if (size > 0 && !isInt(trim(*nbs)))
         throw std::runtime_error("\033[31mError:\033[37m invalid number");
+    if (size == 1 && std::strtod(*nbs, 0) < 0)
+        throw::std::runtime_error("\033[31mError:\033[37m a negative number found");
     (size == 1) && (save = std::strtod(*nbs, 0));
     return vect;
 }
@@ -215,6 +221,8 @@ bool isInt(const std::string &s)
 {
     char *end = NULL;
 
+    if (s.empty())
+        return false;
     std::strtol(s.c_str(), &end, 10);
     std::string res = end;
     return (res.empty());
@@ -270,12 +278,15 @@ void displayContainer(std::deque<double> vect, double save)
     std::cout << "Before: ";
     std::deque<double>::iterator it;
 
-    for (it = vect.begin(); it != vect.end(); ++it)
+    int i = 0;
+    for (it = vect.begin(); it != vect.end() && ++i < 5; ++it)
     {
-        std::cout << *it<< " ";
+        std::cout << *it << " ";
     }
-    if (save >= 0)
+    if (save >= 0 && ++i)
         std::cout << save;
+    if (i >= 5 && it != vect.end())
+        std::cout << "[...]";
     std::cout << std::endl;
 }
 void displayContainer(std::deque<double> vect)
@@ -283,10 +294,13 @@ void displayContainer(std::deque<double> vect)
     std::deque<double >::iterator it;
 
     std::cout << "After: ";
-    for (it = vect.begin(); it != vect.end(); ++it)
+    int i = 0;
+    for (it = vect.begin(); it != vect.end() && ++i <= 5; ++it)
     {
         std::cout << *it << " ";
     }
+    if (i >= 5 && it != vect.end())
+        std::cout << "[...]";
     std::cout << std::endl;
 }
 
@@ -358,7 +372,7 @@ void indexSeq(std::deque<double> & jacob,std::deque<double> & inds, int size)
     int tmp;
     int tmp2;
 
-    it  += 2;
+    it  += 1;
     int i = 0;
     while (it != jacob.end())
     {
@@ -381,19 +395,19 @@ void insertSort(std::deque <double> &seq, std::deque <double> &res, double save)
     std::deque<double> jacob,inds;
     jacobSeq(jacob, 15);
     // displayContainer(jacob);
-    indexSeq(jacob, inds, seq.size());
+    indexSeq(jacob, inds, seq.size() / 2);
     for (std::deque <double>::iterator it = inds.begin(); it != inds.end(); ++it)
+    {
+        
+        if (*(it) < (int)res.size())
         {
-            
-            if (*(it) - 1 < (int)res.size())
-            {
-                insert(seq, res[*it - 1]);
-            }
+            insert(seq, res[*it]);
         }
-        if (res.size())
-            insert(seq, res[0]);
-        if (save >= 0)
-            insert(seq,save);
+    }
+    if (res.size())
+        insert(seq, res[0]);
+    if (save >= 0)
+        insert(seq,save);
 }
 
 void splitSeq(std::deque<std::pair<double, double> > &vect, std::deque <double> &seq, std::deque <double> &res)
@@ -447,6 +461,8 @@ std::deque<double> parseNbs_(char **nbs, int size, double &save)
     }
     if (size > 0 && !isInt(trim(*nbs)))
         throw std::runtime_error("\033[31mError:\033[37m minvalid number");
+    if (size == 1 && std::strtod(*nbs, 0) < 0)
+        throw::std::runtime_error("\033[31mError:\033[37m a negative number found");
     (size == 1) && (save = std::strtod(*nbs, 0));
     return vect;
 }
@@ -477,5 +493,5 @@ void displayTime(clock_t start, clock_t end, int size, const std::string &type)
 {
 
     double time = double(end - start) / CLOCKS_PER_SEC;
-    std::cout << "time to sort a range of " << size << " with " << type << ": " << time << " us" << std::endl; 
+    std::cout << "time to sort a range of " << size << " with " << type << ": \033[34m" << time << " us\033[37m" << std::endl; 
 }

@@ -67,6 +67,8 @@ bool validList(std::list<std::string> &tokens)
         }
         i++;
     }
+    if (i == 1)
+        return true;
     if (i < 3 || i %2 == 0)
         return false;
     return true;
@@ -111,27 +113,27 @@ double doOp(std::stack<std::string> &st, double &nb, std::string &op)
         if (op == "+")
             return nb + sb;
         if (op == "-")
-            return nb - sb;
+            return sb - nb;
         if (op == "*")
             return nb * sb;
         if (op == "/")
         {
-            if (!sb)
+            if (!nb)
                 throw std::runtime_error("devision by zero");
-            return nb / sb;
+            return sb / nb;
         }
     }
     if (op == "+")
         return nb + rpn(st);
     if (op == "-")
-        return nb - rpn(st);
+        return rpn(st) - nb ;
     if (op == "*")
         return nb * rpn(st);
     if (op == "/")
     {
-        // if (!sb)
-        //     throw std::runtime_error("devision by zero");
-        return nb / rpn(st);
+        if (!nb)
+            throw std::runtime_error("devision by zero");
+        return rpn(st) / nb;
     }
     return 0;
 }
@@ -139,7 +141,7 @@ double doOp(std::stack<std::string> &st, double &nb, std::string &op)
 double rpn(std::stack<std::string> &st)
 {
     if (st.size() < 3)
-        return (0);
+        return (atoi(st.top().c_str()));
     std::string op = st.top();
     st.pop();
     double nb = atoi(st.top().c_str());
