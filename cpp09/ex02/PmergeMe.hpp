@@ -6,41 +6,33 @@
 #include <deque>
 #include <iterator>
 #include <utility>
-
-using std::vector;
-using std::cout;
-using std::endl;
-using std::string;
-using std::pair;
-using std::deque;
-using std::stringstream;
-using std::make_pair;
-using std::min;
-using std::max;
-using std::cerr;
-using std::exception;
+#include <ctime>
 
 //vector functions
-std::vector<std::pair<double, double> > parseNbs(char **nbs, int &size);
+void sort(std::vector<double> &vect, double save);
+std::vector<double> parseNbs(char **nbs, int size, double &save);
+std::vector<std::pair<double, double> > makePairs(std::vector<double> vect);
 std::string trim(const std::string &s);
 void mergeInsert(std::vector<int> vect);
 void displayContainer(std::vector<double> vect);
-void sortPair(vector<pair<double,double> > &data);
-void insertSort(vector <double> &seq, vector <double> &res, int save);
-void splitSeq(std::vector<std::pair<double, double> > &vect, vector <double> &seq, vector <double> &res);
+void displayContainer(std::vector<double> vect, double save);
+void sortPair(std::vector<std::pair<double,double> > &data);
+void insertSort(std::vector <double> &seq, std::vector <double> &res, double save);
+void splitSeq(std::vector<std::pair<double, double> > &vect, std::vector <double> &seq, std::vector <double> &res);
 
 //deque functions
-std::deque<std::pair<double, double> > parseNbs_(char **nbs, int &size);
+void sort(std::deque<double> &vect, double save);
+std::deque<double> parseNbs_(char **nbs, int size, double &save);
+std::deque<std::pair<double, double> > makePairs_(std::deque<double> vect);
 std::string trim(const std::string &s);
 void mergeInsert(std::deque<int> vect);
 void displayContainer(std::deque<double> vect);
-void displayContainer(std::deque<std::pair<double, double> > vect);
-void sortPair(deque<pair<double,double> > &data);
-void insertSort(deque <double> &seq, deque <double> &res, int save);
-void splitSeq(std::deque<std::pair<double, double> > &vect, deque <double> &seq, deque <double> &res);
+void displayContainer(std::deque<double> vect, double save);
+void sortPair(std::deque<std::pair<double,double> > &data);
+void insertSort(std::deque <double> &seq, std::deque <double> &res, double save);
+void splitSeq(std::deque<std::pair<double, double> > &vect, std::deque <double> &seq, std::deque <double> &res);
 
 
 bool isInt(const std::string &s);
 double jacobVal(int n);
-char** duplicateArgs(int ac, char **av);
-void freeArgs(int ac, char** av);
+void displayTime(clock_t start, clock_t end, int size, const std::string &type);

@@ -4,20 +4,37 @@
 
 #include "PmergeMe.hpp"
 
-void displayContainer(std::vector<std::pair<double, double> > vect)
+
+void sort(std::vector<double> &vect, double save)
 {
-    std::vector<std::pair<double, double> >::iterator it;
+    std::vector<std::pair<double, double> > pairs = makePairs(vect);
+    sortPair(pairs);
+    std::vector <double> seq , res;
+    splitSeq(pairs, seq, res);
+    insertSort(seq, res, save);
+    vect = seq;
+}
+
+void displayContainer(std::vector<double> vect, double save)
+{
+    std::cout << "\033[32m" << "===============  vector  ====================\n" << "\033[37m";
+    std::cout << "Before: ";
+    std::vector<double>::iterator it;
 
     for (it = vect.begin(); it != vect.end(); ++it)
     {
-        std::cout << "[" <<   it->first << ", " << it->second << "]  ";
+        std::cout << *it << " ";
     }
+    if (save >= 0)
+        std::cout << save;
     std::cout << std::endl;
 }
+
 void displayContainer(std::vector<double> vect)
 {
     std::vector<double >::iterator it;
 
+    std::cout << "After: ";
     for (it = vect.begin(); it != vect.end(); ++it)
     {
         std::cout << *it << " ";
@@ -25,10 +42,10 @@ void displayContainer(std::vector<double> vect)
     std::cout << std::endl;
 }
 
-void merge(const vector<pair<double,double> >& left, const vector<pair<double,double> >& right, vector<pair<double,double> >& result)
+void merge(const std::vector<std::pair<double,double> >& left, const std::vector<std::pair<double,double> >& right, std::vector<std::pair<double,double> >& result)
 {
-    vector<pair<double,double> >::const_iterator it_left = left.begin();
-    vector<pair<double,double> >::const_iterator it_right = right.begin();
+    std::vector<std::pair<double,double> >::const_iterator it_left = left.begin();
+    std::vector<std::pair<double,double> >::const_iterator it_right = right.begin();
 
     while (it_left != left.end() && it_right != right.end()) {
         if (it_left->first <= it_right->first) {
@@ -51,19 +68,19 @@ void merge(const vector<pair<double,double> >& left, const vector<pair<double,do
     }
 }
 
-void insert(vector<double> &vect, double elem)
+void insert(std::vector<double> &vect, double elem)
 {
     if (elem < 0)
         return ;
-    vector<double>::iterator pos = lower_bound(vect.begin(), vect.end(), elem);
+    std::vector<double>::iterator pos = lower_bound(vect.begin(), vect.end(), elem);
     vect.insert(pos, elem);
 }
 
-void sortPair(vector<pair<double,double> > &data)
+void sortPair(std::vector<std::pair<double,double> > &data)
 {
     if (data.size() < 2) return;
 
-    vector<pair<double,double> > left, right;
+    std::vector<std::pair<double,double> > left, right;
     size_t mid = data.size() / 2;
 
     for (size_t i = 0; i < mid; ++i) {
@@ -76,18 +93,18 @@ void sortPair(vector<pair<double,double> > &data)
 
     sortPair(left);
     sortPair(right);
-    vector<pair<double,double> > merged;
+    std::vector<std::pair<double,double> > merged;
     merge(left, right, merged);
     data = merged;
 }
 
-void jacobSeq(vector<double> &vect, int size)
+void jacobSeq(std::vector<double> &vect, int size)
 {
     for (int i =0; i < size; i++)
         vect.push_back(jacobVal(i));
 }
 
-void indexSeq(vector<double> & jacob,vector<double> & inds, int size)
+void indexSeq(std::vector<double> & jacob,std::vector<double> & inds, int size)
 {
     std::vector<double >::iterator it = jacob.begin();
     int tmp;
@@ -111,29 +128,27 @@ void indexSeq(vector<double> & jacob,vector<double> & inds, int size)
     }
 }
 
-void insertSort(vector <double> &seq, vector <double> &res, int save)
+void insertSort(std::vector <double> &seq, std::vector <double> &res, double save)
 {
-    vector<double> jacob,inds;
+    std::vector<double> jacob,inds;
     jacobSeq(jacob, 15);
-    // displayContainer(jacob);
     indexSeq(jacob, inds, seq.size());
-    for (vector <double>::iterator it = inds.begin(); it != inds.end(); ++it)
+    for (std::vector <double>::iterator it = inds.begin(); it != inds.end(); ++it)
         {
-            
             if (*(it) - 1 < (int)res.size())
             {
                 insert(seq, res[*it - 1]);
             }
         }
-        if (res.size()  &&  res[0])
+        if (res.size())
             insert(seq, res[0]);
         if (save >= 0)
             insert(seq,save);
 }
 
-void splitSeq(std::vector<std::pair<double, double> > &vect, vector <double> &seq, vector <double> &res)
+void splitSeq(std::vector<std::pair<double, double> > &vect, std::vector <double> &seq, std::vector <double> &res)
 {
-    for ( vector<pair<double, double> >::iterator it = vect.begin(); it != vect.end(); it++)
+    for ( std::vector<std::pair<double, double> >::iterator it = vect.begin(); it != vect.end(); it++)
     {
         seq.push_back(it->first);
         res.push_back(it->second);
@@ -146,23 +161,38 @@ void splitSeq(std::vector<std::pair<double, double> > &vect, vector <double> &se
 }
 
 
-std::vector<std::pair<double, double> > parseNbs(char **nbs, int &size)
+std::vector<double> parseNbs(char **nbs, int size, double &save)
 {
-    std::vector<std::pair<double, double> > pairs;
+    std::vector<double> vect;
     double first;
     double second;
 
     (1) && (nbs++, size--);
     while (size > 1)
     {
-        if (!isInt(trim(*nbs)))
-            throw std::runtime_error("invalid number");
+        if (!isInt(trim(*nbs)) || !isInt(trim(*(nbs + 1))))
+            throw std::runtime_error("\033[31mError:\033[37m invalid number");
         first = std::strtod(*nbs, 0); nbs++;
         second = std::strtod(*nbs, 0); nbs++;
-        pairs.push_back(std::make_pair(std::max(first, second), std::min(first, second)));
+        if (first < 0 || second < 0)
+            throw::std::runtime_error("\033[31mError:\033[37m a negative number found");
+        vect.push_back(first);
+        vect.push_back(second);
         size -=2;
     }
-    (size == 1) && (size = std::strtod(*nbs, 0));
+    if (size > 0 && !isInt(trim(*nbs)))
+        throw std::runtime_error("\033[31mError:\033[37m invalid number");
+    (size == 1) && (save = std::strtod(*nbs, 0));
+    return vect;
+}
+
+std::vector<std::pair<double, double> > makePairs(std::vector<double> vect)
+{
+    std::vector<std::pair<double, double> > pairs;
+    std::vector<double>::iterator it;
+
+    for (it = vect.begin(); it != vect.end(); it += 2)
+        pairs.push_back(std::make_pair(std::max(*it, *(it + 1)), std::min(*it, *(it + 1))));
     return pairs;
 }
 
@@ -180,6 +210,7 @@ void mergeInsert(std::vector<int> vect)
             pairs.push_back(std::make_pair(*it, tmp));
     }
 }
+
 bool isInt(const std::string &s)
 {
     char *end = NULL;
@@ -211,24 +242,47 @@ std::string trim(const std::string &s)
     return s.substr(start, end - start);
 }
 
+
+
+
+
+
+
+
+
+
 /*=======================================================================================*/
 /*===================== implementaion with deque ========================================*/
 /*=======================================================================================*/
 
-void displayContainer(std::deque<std::pair<double, double> > vect)
+
+
+
+
+
+
+
+
+
+void displayContainer(std::deque<double> vect, double save)
 {
-    std::deque<std::pair<double, double> >::iterator it;
+    std::cout << "\033[32m" <<  "===============  deque  ====================\n" << "\033[37m";
+    std::cout << "Before: ";
+    std::deque<double>::iterator it;
 
     for (it = vect.begin(); it != vect.end(); ++it)
     {
-        std::cout << "[" <<   it->first << ", " << it->second << "]  ";
+        std::cout << *it<< " ";
     }
+    if (save >= 0)
+        std::cout << save;
     std::cout << std::endl;
 }
 void displayContainer(std::deque<double> vect)
 {
     std::deque<double >::iterator it;
 
+    std::cout << "After: ";
     for (it = vect.begin(); it != vect.end(); ++it)
     {
         std::cout << *it << " ";
@@ -236,10 +290,10 @@ void displayContainer(std::deque<double> vect)
     std::cout << std::endl;
 }
 
-void merge(const deque<pair<double,double> >& left, const deque<pair<double,double> >& right, deque<pair<double,double> >& result)
+void merge(const std::deque<std::pair<double,double> >& left, const std::deque<std::pair<double,double> >& right, std::deque<std::pair<double,double> >& result)
 {
-    deque<pair<double,double> >::const_iterator it_left = left.begin();
-    deque<pair<double,double> >::const_iterator it_right = right.begin();
+    std::deque<std::pair<double,double> >::const_iterator it_left = left.begin();
+    std::deque<std::pair<double,double> >::const_iterator it_right = right.begin();
 
     while (it_left != left.end() && it_right != right.end()) {
         if (it_left->first <= it_right->first) {
@@ -262,19 +316,19 @@ void merge(const deque<pair<double,double> >& left, const deque<pair<double,doub
     }
 }
 
-void insert(deque<double> &vect, double elem)
+void insert(std::deque<double> &vect, double elem)
 {
     if (elem < 0)
         return ;
-    deque<double>::iterator pos = lower_bound(vect.begin(), vect.end(), elem);
+    std::deque<double>::iterator pos = lower_bound(vect.begin(), vect.end(), elem);
     vect.insert(pos, elem);
 }
 
-void sortPair(deque<pair<double,double> > &data)
+void sortPair(std::deque<std::pair<double,double> > &data)
 {
     if (data.size() < 2) return;
 
-    deque<pair<double,double> > left, right;
+    std::deque<std::pair<double,double> > left, right;
     size_t mid = data.size() / 2;
 
     for (size_t i = 0; i < mid; ++i) {
@@ -287,18 +341,18 @@ void sortPair(deque<pair<double,double> > &data)
 
     sortPair(left);
     sortPair(right);
-    deque<pair<double,double> > merged;
+    std::deque<std::pair<double,double> > merged;
     merge(left, right, merged);
     data = merged;
 }
 
-void jacobSeq(deque<double> &vect, int size)
+void jacobSeq(std::deque<double> &vect, int size)
 {
     for (int i =0; i < size; i++)
         vect.push_back(jacobVal(i));
 }
 
-void indexSeq(deque<double> & jacob,deque<double> & inds, int size)
+void indexSeq(std::deque<double> & jacob,std::deque<double> & inds, int size)
 {
     std::deque<double >::iterator it = jacob.begin();
     int tmp;
@@ -322,13 +376,13 @@ void indexSeq(deque<double> & jacob,deque<double> & inds, int size)
     }
 }
 
-void insertSort(deque <double> &seq, deque <double> &res, int save)
+void insertSort(std::deque <double> &seq, std::deque <double> &res, double save)
 {
-    deque<double> jacob,inds;
+    std::deque<double> jacob,inds;
     jacobSeq(jacob, 15);
     // displayContainer(jacob);
     indexSeq(jacob, inds, seq.size());
-    for (deque <double>::iterator it = inds.begin(); it != inds.end(); ++it)
+    for (std::deque <double>::iterator it = inds.begin(); it != inds.end(); ++it)
         {
             
             if (*(it) - 1 < (int)res.size())
@@ -336,15 +390,15 @@ void insertSort(deque <double> &seq, deque <double> &res, int save)
                 insert(seq, res[*it - 1]);
             }
         }
-        if (res.size()  &&  res[0])
+        if (res.size())
             insert(seq, res[0]);
         if (save >= 0)
             insert(seq,save);
 }
 
-void splitSeq(std::deque<std::pair<double, double> > &vect, deque <double> &seq, deque <double> &res)
+void splitSeq(std::deque<std::pair<double, double> > &vect, std::deque <double> &seq, std::deque <double> &res)
 {
-    for ( deque<pair<double, double> >::iterator it = vect.begin(); it != vect.end(); it++)
+    for ( std::deque<std::pair<double, double> >::iterator it = vect.begin(); it != vect.end(); it++)
     {
         seq.push_back(it->first);
         res.push_back(it->second);
@@ -354,27 +408,6 @@ void splitSeq(std::deque<std::pair<double, double> > &vect, deque <double> &seq,
         insert(seq, *res.begin());
         res.erase(res.begin());
     }
-}
-
-
-std::deque<std::pair<double, double> > parseNbs_(char **nbs, int &size)
-{
-    std::deque<std::pair<double, double> > pairs;
-    double first;
-    double second;
-
-    (1) && (nbs++, size--);
-    while (size > 1)
-    {
-        if (!isInt(trim(*nbs)))
-            throw std::runtime_error("invalid number");
-        first = std::strtod(*nbs, 0); nbs++;
-        second = std::strtod(*nbs, 0); nbs++;
-        pairs.push_back(std::make_pair(std::max(first, second), std::min(first, second)));
-        size -=2;
-    }
-    (size == 1) && (size = std::strtod(*nbs, 0));
-    return pairs;
 }
 
 void mergeInsert(std::deque<int> vect)
@@ -390,4 +423,59 @@ void mergeInsert(std::deque<int> vect)
         else
             pairs.push_back(std::make_pair(*it, tmp));
     }
+}
+
+
+std::deque<double> parseNbs_(char **nbs, int size, double &save)
+{
+    std::deque<double> vect;
+    double first;
+    double second;
+
+    (1) && (nbs++, size--);
+    while (size > 1)
+    {
+        if (!isInt(trim(*nbs)) || !isInt(trim(*(nbs + 1))))
+            throw std::runtime_error("\033[31mError:\033[37m invalid number");
+        first = std::strtod(*nbs, 0); nbs++;
+        second = std::strtod(*nbs, 0); nbs++;
+        if (first < 0 || second < 0)
+            throw::std::runtime_error("\033[31mError:\033[37m negative number found");
+        vect.push_back(first);
+        vect.push_back(second);
+        size -=2;
+    }
+    if (size > 0 && !isInt(trim(*nbs)))
+        throw std::runtime_error("\033[31mError:\033[37m minvalid number");
+    (size == 1) && (save = std::strtod(*nbs, 0));
+    return vect;
+}
+
+std::deque<std::pair<double, double> > makePairs_(std::deque<double> vect)
+{
+    std::deque<std::pair<double, double> > pairs;
+    std::deque<double>::iterator it;
+
+    for (it = vect.begin(); it != vect.end(); it += 2)
+        pairs.push_back(std::make_pair(std::max(*it, *(it + 1)), std::min(*it, *(it + 1))));
+    return pairs;
+}
+
+
+void sort(std::deque<double> &deq, double save)
+{
+    std::deque<std::pair<double, double> > pairs = makePairs_(deq);
+    sortPair(pairs);
+    std::deque <double> seq , res ;
+    splitSeq(pairs, seq, res);
+    insertSort(seq, res, save);
+    deq = seq;
+}
+
+
+void displayTime(clock_t start, clock_t end, int size, const std::string &type)
+{
+
+    double time = double(end - start) / CLOCKS_PER_SEC;
+    std::cout << "time to sort a range of " << size << " with " << type << ": " << time << " us" << std::endl; 
 }
